@@ -1,0 +1,2235 @@
+{
+	"info": {
+		"_postman_id": "de8f6b13-cf8a-493e-a5eb-92682b02004d",
+		"name": "AutoIMS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "/mobile/user/auth/login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3be9930d-13a7-42e6-8898-f642599a9067",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "200",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userName\": \"demo@devnow.ink\", \n\t\"password\": \"devnow33\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/mobile/user/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"auth",
+										"login"
+									]
+								},
+								"description": "Returns auth, permissions and options encoded in an access token (JWT).\n\nExample decoded JWT:\n<pre>\n{\n\t\"header\": {\n\t\t\"alg\": \"HS256\",\n\t\t\"typ\": \"JWT\"\n\t},\n\t\"payload\": {\n\t\t\"Exp\": 1565022660346,\n\t\t\"Iss\": { \n\t\t\t\"id\": 12345, \n\t\t\t\"email\": \"demo@devnow.ink\", \n\t\t\t\"firstName\": \"Fred\", \n\t\t\t\"lastName\": \"Brown\", \n\t\t\t\"userName\": \"testUser\",\n\t\t\t\"options\": { \n\t\t\t\t\"clients\": { \n\t\t\t\t\t\"selected\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 123,\n\t\t\t\t\t\t\t\"name\": \"Demo Cars\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}, \n\t\t\t\t\"auctions\": { \n\t\t\t\t\t\"selected\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 456,\n\t\t\t\t\t\t\t\"name\": \"Buy Buy Cars\"\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t\"customFields\": { \n\t\t\t\t\t\"clientAccountNumber\": \"\"\n\t\t\t\t}\n\t\t\t}, \n\t\t\t\"permissions\": { \n\t\t\t\t\"approveRepairs\": true,\n\t\t\t\t\"viewPrivateNotes\": true,\n\t\t\t\t\"addPrivateNotes\": false,\n\t\t\t\t\"viewPrice\": true,\n\t\t\t\t\"editLivePrice\": false,\n\t\t\t\t\"placeHold\": true,\n\t\t\t\t\"releaseHold\": false,\n        \t\t\"changeStatus\": true\n\t\t\t}\n\t\t}\n\t}\n}\n</pre>"
+							},
+							"response": [
+								{
+									"name": "200 - Login Successful",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"userName\": \"testUser\", \n\t\"password\": \"devnow33\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/user/auth/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"accessToken\": \"<token here>\",\n    \"refreshToken\": \"<refresh token>\"\n}"
+								},
+								{
+									"name": "400 - Failure - Wrong password ",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"userName\": \"testUser\",\n\t\"password\": \"wrongPassword\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/user/auth/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"response\": \"Error: Password invalid\"\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/user/auth/refresh",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-mock-response-code",
+										"value": "200",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"<token>\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/mobile/user/auth/refresh",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"auth",
+										"refresh"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": ""
+										},
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								},
+								"description": "Refreshes auth token."
+							},
+							"response": [
+								{
+									"name": "200 - Refresh Successful",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"refreshToken\": \"<token>\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/mobile/user/auth/refresh",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"refresh"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"accessToken\": \"<token here>\", \n\t\"refreshToken\": \"<refresh token>\"\n}"
+								},
+								{
+									"name": "401 - Unauthorized Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"refreshToken\": \"<token>\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/mobile/user/auth/refresh",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"refresh"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"response\": \"Error: Token is missing or invalid\"\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/user/auth/logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"<token>\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/mobile/user/auth/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"auth",
+										"logout"
+									]
+								},
+								"description": "Logs out user."
+							},
+							"response": [
+								{
+									"name": "401 - Unauthorized Error",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"refreshToken\": \"<token>\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/mobile/user/auth/logout",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"logout"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"response\": \"Error: Token is missing or invalid\"\n}"
+								},
+								{
+									"name": "200 - Logout Successful",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"accessToken\": \"<token>\", \n    \"refreshToken\": \"<token>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/user/auth/logout",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\"\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/user/auth/password/reset",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"demo@devnow.ink\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/mobile/user/auth/password/reset",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"auth",
+										"password",
+										"reset"
+									]
+								},
+								"description": "Forgot password"
+							},
+							"response": [
+								{
+									"name": "200 - Reset password",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"email\": \"demo@devnow.ink\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/mobile/user/auth/password/reset",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"mobile",
+												"user",
+												"auth",
+												"password",
+												"reset"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "/mobile/user/clients",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mobile/user/clients",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"user",
+								"clients"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 - Get clients",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/user/clients",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"clients"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "[\n    {\n        \"clientId\": \"\",\n        \"name\": \"\"\n    },\n    {\n        \"clientId\": \"\",\n        \"name\": \"\"\n    },\n    {\n        \"clientId\": \"\",\n        \"name\": \"\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "/mobile/user/auctions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mobile/user/auctions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"user",
+								"auctions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 - Get auctions",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/user/auctions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"user",
+										"auctions"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "[\n\t{\n\t\t\"auctionId\": \"\",\n\t\t\"name\": \"\"\n\t},\n\t{\n\t\t\"auctionId\": \"\",\n\t\t\"name\": \"\"\n\t},\n\t{\n\t\t\"auctionId\": \"\",\n\t\t\"name\": \"\"\n\t}\n]"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "widget",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "/mobile/widget/:id/count",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/widget/:id/count",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"widget",
+										":id",
+										"count"
+									],
+									"variable": [
+										{
+											"id": "29a9cbde-0f06-4d82-9b26-b3e2a97f2b6d",
+											"key": "id",
+											"value": "1",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Returns count of vehicles in the widget list."
+							},
+							"response": [
+								{
+									"name": "200 - Get widget count",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/mobile/widget/:id/count",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"widget",
+												":id",
+												"count"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"count\": 141\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/widget/:id/list",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"limit\": 10,\n\t\"start\": 0,\n\t\"sortKey\": \"<sortKey>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/mobile/widget/:id/list",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"widget",
+										":id",
+										"list"
+									],
+									"variable": [
+										{
+											"id": "90c72255-4b33-4612-9557-d49297828055",
+											"key": "id",
+											"value": "1",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Returns list of vehicles for the widget."
+							},
+							"response": [
+								{
+									"name": "200 - Get widget list",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/mobile/widget/:id/list",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"widget",
+												":id",
+												"list"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"totalCount\": 141,\n\t\"vehicleList\": [\n        {\n            \"invId\": 1006050645,\n            \"vin\": \"DEMOVINF7HU095676\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Hyundai\",\n            \"model\": \"Sonata\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1008007725,\n            \"vin\": \"DEMOVINF7HU095677\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2015,\n            \"make\": \"Maserati\",\n            \"model\": \"Ghibli\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 304\n        },\n        {\n            \"invId\": 1001397741,\n            \"vin\": \"DEMOVINF7HU095678\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Kia\",\n            \"model\": \"Sorento\",\n            \"holdText\": \"Bankruptcy\",\n            \"vehicleStatus\": 301\n        },\n        {\n            \"invId\": 1003989149,\n            \"vin\": \"DEMOVINF7HU095679\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2010,\n            \"make\": \"Jeep\",\n            \"model\": \"Liberty\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 401\n        },\n        {\n            \"invId\": 1009206999,\n            \"vin\": \"DEMOVINF7HU095680\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2009,\n            \"make\": \"Dodge\",\n            \"model\": \"Journey\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006178099,\n            \"vin\": \"DEMOVINF7HU095681\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 1999,\n            \"make\": \"BMW\",\n            \"model\": \"5 Series\",\n            \"holdText\": \"Corrections\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006353079,\n            \"vin\": \"DEMOVINF7HU095682\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Dodge\",\n            \"model\": \"Challenger\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1007782748,\n            \"vin\": \"DEMOVINF7HU095683\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Hyundai\",\n            \"model\": \"Azera\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1002298267,\n            \"vin\": \"DEMOVINF7HU095684\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2016,\n            \"make\": \"Chrysler\",\n            \"model\": \"3000\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1005965601,\n            \"vin\": \"DEMOVINF7HU095685\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2019,\n            \"make\": \"Toyota\",\n            \"model\": \"Highlander\",\n            \"holdText\": \"3rd Party\",\n            \"vehicleStatus\": 802\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/widget/:id/sortKeys",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/widget/:id/sortKeys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"widget",
+										":id",
+										"sortKeys"
+									],
+									"variable": [
+										{
+											"id": "0f00cec4-acf0-4d55-bd2b-b128241d9b36",
+											"key": "id",
+											"value": "1",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Returns sort keys for the widget id."
+							},
+							"response": [
+								{
+									"name": "200 - Get widget sort keys",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/mobile/widget/:id/sortKeys",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"widget",
+												":id",
+												"sortKeys"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"sortKeys\": [\n\t\t\"<sortKey>\",\n\t\t\"<sortKey>\",\n\t\t\"<sortKey>\"\n\t]\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "vehicle",
+			"item": [
+				{
+					"name": "{inventory Id}",
+					"item": [
+						{
+							"name": "damage",
+							"item": [
+								{
+									"name": "{damage Id}",
+									"item": [
+										{
+											"name": "/mobile/vehicle/:inventoryId/damage/:damageId",
+											"request": {
+												"auth": {
+													"type": "noauth"
+												},
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"item\": \"Passenger console\",\n\t\"damage\": \"Scratched upholstery\",\n\t\"severity\": \"1-2 inches\",\n\t\"approvalStatus\": \"Approved\",\n\t\"estimate\": 255.6,\n\t\"image\": {\n\t\t\"label\": \"<label>\",\n\t\t\"uri\": \"<uri>\"\n\t},\n\t\"suggested\": false,\n\t\"changeStatus\": true,\n\t\"action\": \"Repair\",\n\t\"chargeable\": true,\n\t\"repaired\": true,\n\t\"writer\": \"Joe Miller\",\n\t\"comment\": \"Amazon sells more than half of the books in the U.S., but takes a hands-off approach in its bookstore, never checking for authenticity or quality.\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/damage/:damageId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"damage",
+														":damageId"
+													],
+													"variable": [
+														{
+															"id": "692e1863-e9da-407e-af44-6fb78b6256a0",
+															"key": "inventoryId",
+															"value": "1006050645",
+															"type": "string"
+														},
+														{
+															"id": "d51696e0-da09-4a6a-9b41-d24c95723e4d",
+															"key": "damageId",
+															"value": "1",
+															"type": "string"
+														}
+													]
+												},
+												"description": "Updates the approval status of the damage item."
+											},
+											"response": [
+												{
+													"name": "200 - Update damage",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer {{token}}",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n\t\"item\": \"Passenger console\",\n\t\"damage\": \"Scratched upholstery\",\n\t\"severity\": \"1-2 inches\",\n\t\"approvalStatus\": \"Approved\",\n\t\"estimate\": 255.6,\n\t\"image\": {\n\t\t\"label\": \"<label>\",\n\t\t\"uri\": \"<uri>\"\n\t},\n\t\"suggested\": false,\n\t\"changeStatus\": true,\n\t\"action\": \"Repair\",\n\t\"chargeable\": true,\n\t\"repaired\": true,\n\t\"writer\": \"Joe Miller\",\n\t\"comment\": \"Amazon sells more than half of the books in the U.S., but takes a hands-off approach in its bookstore, never checking for authenticity or quality.\"\n}"
+														},
+														"url": {
+															"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/damage/:damageId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"mobile",
+																"vehicle",
+																":inventoryId",
+																"damage",
+																":damageId"
+															],
+															"variable": [
+																{
+																	"key": "inventoryId",
+																	"value": "1006050645"
+																},
+																{
+																	"key": "damageId",
+																	"value": "1"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"message\": \"Success\"\n}"
+												}
+											]
+										},
+										{
+											"name": "/mobile/vehicle/:inventoryId/damage/:damageId",
+											"request": {
+												"auth": {
+													"type": "noauth"
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/damage/:damageId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"damage",
+														":damageId"
+													],
+													"variable": [
+														{
+															"id": "e1bad22f-6538-4902-9b4c-ca93cd57aa68",
+															"key": "inventoryId",
+															"value": "1006050645",
+															"type": "string"
+														},
+														{
+															"id": "410c2ffa-6cda-4d80-899e-cc1c626d8c02",
+															"key": "damageId",
+															"value": "1",
+															"type": "string"
+														}
+													]
+												},
+												"description": "Returns the full detail object for the damage item."
+											},
+											"response": [
+												{
+													"name": "200 - Get damage",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer {{token}}",
+																"type": "text"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/damage/:damageId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"mobile",
+																"vehicle",
+																":inventoryId",
+																"damage",
+																":damageId"
+															],
+															"variable": [
+																{
+																	"key": "inventoryId",
+																	"value": "1006050645"
+																},
+																{
+																	"key": "damageId",
+																	"value": "1"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n\t\"item\": \"Passenger console\",\n\t\"damage\": \"Scratched upholstery\",\n\t\"severity\": \"1-2 inches\",\n\t\"approvalStatus\": \"Not reviewed\",\n\t\"estimate\": 255.6,\n\t\"image\": {\n\t\t\"label\": \"<label>\",\n\t\t\"uri\": \"<uri>\"\n\t},\n\t\"suggested\": false,\n\t\"changeStatus\": true,\n\t\"action\": \"Repair\",\n\t\"chargeable\": true,\n\t\"repaired\": true,\n\t\"writer\": \"Joe Miller\",\n\t\"comment\": \"Amazon sells more than half of the books in the U.S., but takes a hands-off approach in its bookstore, never checking for authenticity or quality.\"\n}"
+												}
+											]
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "/mobile/vehicle/:inventoryId/conditionReport/:crType/list",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"limit\": 5,\n\t\"start\": 0\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/conditionReport/:crType/list",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"conditionReport",
+												":crType",
+												"list"
+											],
+											"variable": [
+												{
+													"id": "23239ee5-1319-4507-9dc7-81dd29f032f6",
+													"key": "inventoryId",
+													"value": "1006050645",
+													"type": "string"
+												},
+												{
+													"id": "c6d21817-018c-4b7a-8a99-26bcc55b5c19",
+													"key": "crType",
+													"value": "1",
+													"type": "string"
+												}
+											]
+										},
+										"description": "Returns the list of damages with pagination."
+									},
+									"response": [
+										{
+											"name": "200 - Get damage list",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/conditionReport/:crType/list",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"conditionReport",
+														":crType",
+														"list"
+													],
+													"variable": [
+														{
+															"key": "inventoryId",
+															"value": "1006050645"
+														},
+														{
+															"key": "crType",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"body": "{\n\t\"totalCount\": 20,\n    \"damages\": [\n        {\n            \"id\": 1,\n            \"item\": \"Passenger console\",\n            \"damage\": \"Scratched upholstery\",\n            \"severity\": \"1-2 inches\",\n            \"approvalStatus\": \"Not Reviewed\",\n            \"estimate\": 255.6,\n            \"image\": {\n                \"label\": \"<label>\",\n                \"uri\": \"<uri>\"\n            },\n            \"suggested\": false,\n            \"changeStatus\": true\n        },\n        {\n            \"id\": 2,\n            \"item\": \"Front Bumper/Cover\",\n            \"damage\": \"Broken\",\n            \"severity\": \"Replacement Required\",\n            \"approvalStatus\": \"Not Reviewed\",\n            \"estimate\": 375,\n            \"image\": {\n                \"label\": \"<label>\",\n                \"uri\": \"<uri>\"\n            },\n            \"suggested\": true,\n            \"changeStatus\": true\n        },\n        {\n            \"id\": 3,\n            \"item\": \"Windshield\",\n            \"damage\": \"Chips\",\n            \"severity\": \"1-2 inches\",\n            \"approvalStatus\": \"Not reviewed\",\n            \"estimate\": 305.75,\n            \"image\": {\n                \"label\": \"<label>\",\n                \"uri\": \"<uri>\"\n            },\n            \"suggested\": true,\n            \"changeStatus\": false\n        },\n        {\n            \"id\": 4,\n            \"item\": \"Right Head Lamp\",\n            \"damage\": \"Broken\",\n            \"severity\": \"3\",\n            \"approvalStatus\": \"Approved\",\n            \"estimate\": 155,\n            \"image\": {\n                \"label\": \"<label>\",\n                \"uri\": \"<uri>\"\n            },\n            \"suggested\": true,\n            \"changeStatus\": true\n        },\n        {\n            \"id\": 5,\n            \"item\": \"Hood\",\n            \"damage\": \"Broken\",\n            \"severity\": \"1-2 inches\",\n            \"approvalStatus\": \"Approved\",\n            \"estimate\": 275,\n            \"image\": {\n                \"label\": \"<label>\",\n                \"uri\": \"<uri>\"\n            },\n            \"suggested\": false,\n            \"changeStatus\": false\n        }\n    ]\n}"
+										}
+									]
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "price",
+							"item": [
+								{
+									"name": "/mobile/vehicle/:inventoryId/price",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/price",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"price"
+											],
+											"variable": [
+												{
+													"id": "6234b611-397a-4c7d-b446-2c4b22c32dee",
+													"key": "inventoryId",
+													"value": "1006050645",
+													"type": "string"
+												}
+											]
+										},
+										"description": "Returns the full detail object for LivePrice."
+									},
+									"response": [
+										{
+											"name": "200 - Get price",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/price",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"price"
+													],
+													"variable": [
+														{
+															"key": "inventoryId",
+															"value": "1006050645"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n \"guidePrices\": [\n  {\n   \"label\": \"Black Book\",\n   \"value\": 11343\n  },\n  {\n   \"label\": \"Adjusted MMR\",\n   \"value\": 10500\n  },\n  {\n   \"label\": \"Auction Guide\",\n   \"value\": 9546\n  }\n ],\n \"damageReductionRange\": {\n \t\"min\": 0,\n \t\"max\": 2500\n }\n}"
+										}
+									]
+								},
+								{
+									"name": "/mobile/vehicle/:inventoryId/price",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n \"requestedFloorPrice\": 9943,\n \"privateFloorPrice\": 9943,\n \"lastSavedLivePrice\": 9943,\n \"guideType\": \"Black Book\",\n \"guideValue\": 11343,\n \"damageDeduction\": 1500,\n \"priceAdjustment\": 100,\n \"guidePrices\": [\n  {\n   \"label\": \"Black Book\",\n   \"value\": 11343\n  },\n  {\n   \"label\": \"Adjusted MMR\",\n   \"value\": 10500\n  },\n  {\n   \"label\": \"Auction Guide\",\n   \"value\": 9546\n  }\n ]\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/price",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"price"
+											],
+											"variable": [
+												{
+													"id": "8d0662b0-05de-47f3-8d63-389fd80c053f",
+													"key": "inventoryId",
+													"value": "1006050645",
+													"type": "string"
+												}
+											]
+										},
+										"description": "Updates LivePrice."
+									},
+									"response": [
+										{
+											"name": "200 - Update price",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n \"requestedFloorPrice\": 9943,\n \"privateFloorPrice\": 9943,\n \"lastSavedLivePrice\": 9943,\n \"guideType\": \"Black Book\",\n \"guideValue\": 11343,\n \"damageDeduction\": 1500,\n \"priceAdjustment\": 100,\n \"guidePrices\": [\n  {\n   \"label\": \"Black Book\",\n   \"value\": 11343\n  },\n  {\n   \"label\": \"Adjusted MMR\",\n   \"value\": 10500\n  },\n  {\n   \"label\": \"Auction Guide\",\n   \"value\": 9546\n  }\n ]\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/price",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"price"
+													],
+													"variable": [
+														{
+															"key": "inventoryId",
+															"value": "1006050645"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Success\"\n}"
+										}
+									]
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "hold",
+							"item": [
+								{
+									"name": "/mobile/vehicle/:inventoryId/hold",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"holdtype\": 1,\n    \"holdUntilDate\": 1565122746444,\n    \"released\": false\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/hold",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"hold"
+											],
+											"variable": [
+												{
+													"id": "d6aed00f-aa1e-4dd2-84ec-bb87a41fd3c8",
+													"key": "inventoryId",
+													"value": "1006050645",
+													"type": "string"
+												}
+											]
+										},
+										"description": "Adds a hold to the vehicle."
+									},
+									"response": [
+										{
+											"name": "200 - Add hold",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"holdtype\": 1,\n    \"holdUntilDate\": 1565122746444,\n    \"released\": false\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/hold",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"hold"
+													],
+													"variable": [
+														{
+															"key": "inventoryId",
+															"value": "1006050645"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Success\"\n}"
+										}
+									]
+								},
+								{
+									"name": "/mobile/vehicle/:inventoryId/hold/:holdId",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"holdtype\": 1,\n    \"holdUntilDate\": 1565122746444,\n    \"released\": true\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/hold/:holdId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"hold",
+												":holdId"
+											],
+											"variable": [
+												{
+													"id": "7aca247f-116c-4e7f-b07f-5652f6c2d749",
+													"key": "inventoryId",
+													"value": "1006050645",
+													"type": "string"
+												},
+												{
+													"id": "11492463-4d4b-422f-95c7-519e22ee8d1c",
+													"key": "holdId",
+													"value": "1",
+													"type": "string"
+												}
+											]
+										},
+										"description": "Releases a hold."
+									},
+									"response": [
+										{
+											"name": "200 - Release hold",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer {{token}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"holdtype\": 1,\n    \"holdUntilDate\": 1565122746444,\n    \"released\": true\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/hold/:holdId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"mobile",
+														"vehicle",
+														":inventoryId",
+														"hold",
+														":holdId"
+													],
+													"variable": [
+														{
+															"key": "inventoryId",
+															"value": "1006050645"
+														},
+														{
+															"key": "holdId",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"Success\"\n}"
+										}
+									]
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "/mobile/vehicle/:inventoryId",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"vehicle",
+										":inventoryId"
+									],
+									"variable": [
+										{
+											"id": "14697a4d-44da-4f23-ba6d-269fbe4d5e67",
+											"key": "inventoryId",
+											"value": "1006050645",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Returns the full detail object for the vehicle."
+							},
+							"response": [
+								{
+									"name": "200 - Get vehicle",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId"
+											],
+											"variable": [
+												{
+													"key": "inventoryId",
+													"value": "1006050645"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"summary\": {\n        \"invId\": 1006050645,\n        \"vin\": \"DEMOVINF7HU095677\",\n        \"year\": 2015,\n        \"make\": \"Maserati\",\n        \"model\": \"Ghibli\",\n        \"holdText\": \"3 holds\",\n        \"vehicleStatus\": 304,\n        \"images\": [\n        \t{\n        \t\t\"label\": \"<label>\",\n        \t\t\"uri\": \"<uri>\"\n        \t},\n        \t{\n        \t\t\"label\": \"<label>\",\n        \t\t\"uri\": \"<uri>\"\n        \t}\n        ],\n        \"mileage\": 36123,\n        \"clientAccountNumber\": \"CLIENTSTOCK2\",\n        \"auctionWo\": \"AUCTIONWO2\",\n        \"clientName\": \"Nationwide Fleet\",\n        \"auctionName\": \"166 Auto Auction\"\n    },\n    \"condition\": {\n    \t\"defaultCrType\": 1,\n        \"conditionReports\": [\n        \t{\n        \t\t\"crType\": 1,\n        \t\t\"crDescription\": \"Approved\",\n        \t\t\"count\": 20\n        \t},\n        \t{\n        \t\t\"crType\": 3,\n        \t\t\"crDescription\": \"Original\",\n        \t\t\"count\": 25\n        \t}\n        ],\n        \"repairNotes\": [\n            {\n                \"type\": \"Repair Related\",\n                \"date\": 1564782051791,\n                \"text\": \"Amazon sells more than half...\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            },\n            {\n                \"type\": \"Dealer Message\",\n                \"date\": 1564782051791,\n                \"text\": \"From her first novel at 50...\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            }\n        ]\n    },\n    \"tracking\": [\n        {\n            \"type\": \"Date Last Modified by Web Application\",\n            \"date\": 1564782051791,\n            \"text\": \"\",\n            \"author\": \"\",\n            \"private\": false\n        },\n        {\n            \"type\": \"Client Repair Note\",\n            \"date\": 1564782051791,\n            \"text\": \"Check out the rear bumper.\",\n            \"author\": \"Joe Miller\",\n            \"private\": false\n        }\n    ],\n    \"livePricing\": {\n        \"requestedFloorPrice\": 9943,\n        \"privateFloorPrice\": 9943,\n        \"lastSavedLivePrice\": 9943,\n        \"guideType\": \"Black Book\",\n        \"guideValue\": 11343,\n        \"damageDeduction\": 1500,\n        \"priceAdjustment\": 100\n    },\n    \"auction\": {\n    \t\"fields\": [\n    \t\t{\n    \t\t\t\"label\": \"Sale Price\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Sale Date\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Funds Sent Date\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Charge Amount\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Check Amount\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Days Run\",\n                \"value\": 15,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Buyer\",\n                \"value\": \"Sofia Berjsen\",\n                \"type\": \"string\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Auction\",\n                \"value\": \"aaa\",\n                \"type\": \"string\",\n                \"editable\": false\n    \t\t}\n    \t],\n        \"charges\": [\n            {\n                \"amount\": 255.6,\n                \"chargeType\": \"Recon: Tires\",\n                \"description\": \"Multiple dents/paint damage, etc.\"\n            },\n            {\n                \"amount\": 255.6,\n                \"chargeType\": \"Sale Fee\",\n                \"description\": \"Fee for sale, etc.\"\n            }\n        ]\n    },\n    \"client\": {\n        \"fields\": [\n            {\n                \"label\": \"Private Code 1\",\n                \"value\": \"89071-113\",\n                \"type\": \"string\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Private Book Value\",\n                \"value\": 4500,\n                \"type\": \"numeric\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Open Date 1\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Open Text 1\",\n                \"value\": \"Demo Text\",\n                \"type\": \"string\",\n                \"editable\": false\n            }\n        ]\n    },\n    \"holds\": [\n        {\n            \"id\": 1,\n            \"holdType\": 25,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 2,\n            \"holdType\": 1,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 3,\n            \"holdType\": 19,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 4,\n            \"holdType\": 14,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 5,\n            \"holdType\": 10,\n            \"holdUntilDate\": 1564782051791\n        }\n    ],\n    \"actions\": [\n    \t\"Clear for sale\",\n    \t\"Cancel\",\n    \t\"Request redemption\"\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/vehicle/:inventoryId",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"vehicleStatus\": \"Clear for Sale\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"vehicle",
+										":inventoryId"
+									],
+									"variable": [
+										{
+											"id": "4df225f8-c0ce-4a4a-bb05-99ddb835f0c1",
+											"key": "inventoryId",
+											"value": "1006050645",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Updates vehicle status."
+							},
+							"response": [
+								{
+									"name": "200 - Update vehicle status",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"vehicleStatus\": \"Clear for Sale\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId"
+											],
+											"variable": [
+												{
+													"key": "inventoryId",
+													"value": "1006050645"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n    \"summary\": {\n        \"invId\": 1006050645,\n        \"vin\": \"DEMOVINF7HU095677\",\n        \"year\": 2015,\n        \"make\": \"Maserati\",\n        \"model\": \"Ghibli\",\n        \"holdText\": \"3 holds\",\n        \"vehicleStatus\": 401,\n        \"images\": [\n        \t{\n        \t\t\"label\": \"<label>\",\n        \t\t\"uri\": \"<uri>\"\n        \t},\n        \t{\n        \t\t\"label\": \"<label>\",\n        \t\t\"uri\": \"<uri>\"\n        \t}\n        ],\n        \"mileage\": 36123,\n        \"clientAccountNumber\": \"CLIENTSTOCK2\",\n        \"auctionWo\": \"AUCTIONWO2\",\n        \"clientName\": \"Nationwide Fleet\",\n        \"auctionName\": \"166 Auto Auction\"\n    },\n    \"condition\": {\n    \t\"defaultCrType\": 1,\n        \"conditionReports\": [\n        \t{\n        \t\t\"crType\": 1,\n        \t\t\"crDescription\": \"Approved\",\n        \t\t\"count\": 20\n        \t},\n        \t{\n        \t\t\"crType\": 3,\n        \t\t\"crDescription\": \"Original\",\n        \t\t\"count\": 25\n        \t}\n        ],\n        \"repairNotes\": [\n            {\n                \"type\": \"Repair Related\",\n                \"date\": 1564782051791,\n                \"text\": \"Amazon sells more than half...\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            },\n            {\n                \"type\": \"Dealer Message\",\n                \"date\": 1564782051791,\n                \"text\": \"From her first novel at 50...\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            }\n        ]\n    },\n    \"tracking\": [\n        {\n            \"type\": \"Date Last Modified by Web Application\",\n            \"date\": 1564782051791,\n            \"text\": \"\",\n            \"author\": \"\",\n            \"private\": false\n        },\n        {\n            \"type\": \"Client Repair Note\",\n            \"date\": 1564782051791,\n            \"text\": \"Check out the rear bumper.\",\n            \"author\": \"Joe Miller\",\n            \"private\": false\n        }\n    ],\n    \"livePricing\": {\n        \"requestedFloorPrice\": 9943,\n        \"privateFloorPrice\": 9943,\n        \"lastSavedLivePrice\": 9943,\n        \"guideType\": \"Black Book\",\n        \"guideValue\": 11343,\n        \"damageDeduction\": 1500,\n        \"priceAdjustment\": 100\n    },\n    \"auction\": {\n    \t\"fields\": [\n    \t\t{\n    \t\t\t\"label\": \"Sale Price\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Sale Date\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Funds Sent Date\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Charge Amount\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Check Amount\",\n                \"value\": 4345,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Days Run\",\n                \"value\": 15,\n                \"type\": \"numeric\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Buyer\",\n                \"value\": \"Sofia Berjsen\",\n                \"type\": \"string\",\n                \"editable\": false\n    \t\t},\n    \t\t{\n    \t\t\t\"label\": \"Auction\",\n                \"value\": \"aaa\",\n                \"type\": \"string\",\n                \"editable\": false\n    \t\t}\n    \t],\n        \"charges\": [\n            {\n                \"amount\": 255.6,\n                \"chargeType\": \"Recon: Tires\",\n                \"description\": \"Multiple dents/paint damage, etc.\"\n            },\n            {\n                \"amount\": 255.6,\n                \"chargeType\": \"Sale Fee\",\n                \"description\": \"Fee for sale, etc.\"\n            }\n        ]\n    },\n    \"client\": {\n        \"fields\": [\n            {\n                \"label\": \"Private Code 1\",\n                \"value\": \"89071-113\",\n                \"type\": \"string\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Private Book Value\",\n                \"value\": 4500,\n                \"type\": \"numeric\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Open Date 1\",\n                \"value\": 1564782051791,\n                \"type\": \"date\",\n                \"editable\": false\n            },\n            {\n                \"label\": \"Open Text 1\",\n                \"value\": \"Demo Text\",\n                \"type\": \"string\",\n                \"editable\": false\n            }\n        ]\n    },\n    \"holds\": [\n        {\n            \"id\": 1,\n            \"holdType\": 25,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 2,\n            \"holdType\": 1,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 3,\n            \"holdType\": 19,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 4,\n            \"holdType\": 14,\n            \"holdUntilDate\": 1564782051791\n        },\n        {\n            \"id\": 5,\n            \"holdType\": 10,\n            \"holdUntilDate\": 1564782051791\n        }\n    ],\n    \"actions\": [\n    \t\"Cancel\",\n    \t\"Request redemption\"\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/vehicle/:inventoryId/notes",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"Client Repair Note\",\n    \"text\": \"Check out the rear bumper\",\n    \"private\": false\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/notes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"vehicle",
+										":inventoryId",
+										"notes"
+									],
+									"variable": [
+										{
+											"id": "2e1d0e78-39fe-4107-8b95-f867a90d7a94",
+											"key": "inventoryId",
+											"value": "1006050645",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Adds a note to the vehicle."
+							},
+							"response": [
+								{
+									"name": "200 - Add note",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\": \"Client Repair Note\",\n    \"text\": \"Check out the rear bumper\",\n    \"private\": false\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/notes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"notes"
+											],
+											"variable": [
+												{
+													"key": "inventoryId",
+													"value": "1006050645"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\"\n}"
+								}
+							]
+						},
+						{
+							"name": "/mobile/vehicle/:inventoryId/clientField",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"label\": \"Private Code 1\",\n        \"value\": \"89071-113\"\n    },\n    {\n        \"label\": \"Private Book Value\",\n        \"value\": 4500\n    }\n]"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/clientField",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"vehicle",
+										":inventoryId",
+										"clientField"
+									],
+									"variable": [
+										{
+											"id": "eb3c8020-dd5f-49ec-839f-ca54b03725d8",
+											"key": "inventoryId",
+											"value": "1006050645",
+											"type": "string"
+										}
+									]
+								},
+								"description": "Updates client fields. Need to send the fields and values that need to be updated."
+							},
+							"response": [
+								{
+									"name": "200 - Update Client Fields",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"label\": \"Private Code 1\",\n        \"value\": \"89071-113\"\n    },\n    {\n        \"label\": \"Private Book Value\",\n        \"value\": 4500\n    }\n]"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/mobile/vehicle/:inventoryId/clientField",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"mobile",
+												"vehicle",
+												":inventoryId",
+												"clientField"
+											],
+											"variable": [
+												{
+													"key": "inventoryId",
+													"value": "1006050645"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Success\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "/mobile/vehicle/summary",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"prev\": 1006050645,\n\t\"current\": 1008007725,\n\t\"next\": 1001397741\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mobile/vehicle/summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"vehicle",
+								"summary"
+							]
+						},
+						"description": "Returns the full vehicle summaries of the vehicle ids in the query params."
+					},
+					"response": [
+						{
+							"name": "200 - Get vehicles",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/mobile/vehicle/summary",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"mobile",
+										"vehicle",
+										"summary"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "[\n    {\n        \"summary\": {\n            \"invId\": 1006050645,\n            \"vin\": \"DEMOVINF7HU095676\",\n            \"year\": 2012,\n            \"make\": \"Hyundai\",\n            \"model\": \"Sonata\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802,\n            \"images\": [\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t},\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t}\n            ],\n            \"mileage\": 36123,\n            \"clientAccountNumber\": \"CLIENTSTOCK2\",\n            \"auctionWo\": \"AUCTIONWO2\",\n            \"clientName\": \"Nationwide Fleet\",\n            \"auctionName\": \"166 Auto Auction\"\n        },\n        \"condition\": {\n        \t\"defaultCrType\": 1,\n            \"conditionReports\": [\n            \t{\n            \t\t\"crType\": 1,\n            \t\t\"crDescription\": \"Approved\",\n            \t\t\"count\": 20\n            \t},\n            \t{\n            \t\t\"crType\": 3,\n            \t\t\"crDescription\": \"Original\",\n            \t\t\"count\": 25\n            \t}\n            ],\n            \"repairNotes\": [\n                {\n                    \"type\": \"Repair Related\",\n                    \"date\": 1564782051791,\n                    \"text\": \"Amazon sells more than half...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                },\n                {\n                    \"type\": \"Dealer Message\",\n                    \"date\": 1564782051791,\n                    \"text\": \"From her first novel at 50...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                }\n            ]\n        },\n        \"tracking\": [\n            {\n                \"type\": \"Date Last Modified by Web Application\",\n                \"date\": 1564782051791,\n                \"text\": \"\",\n                \"author\": \"\",\n                \"private\": false\n            },\n            {\n                \"type\": \"Client Repair Note\",\n                \"date\": 1564782051791,\n                \"text\": \"Check out the rear bumper.\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            }\n        ],\n        \"livePricing\": {\n            \"requestedFloorPrice\": 9943,\n            \"privateFloorPrice\": 9943,\n            \"lastSavedLivePrice\": 9943,\n            \"guideType\": \"Black Book\",\n            \"guideValue\": 11343,\n            \"damageDeduction\": 1500,\n            \"priceAdjustment\": 100\n        },\n        \"auction\": {\n        \t\"fields\": [\n        \t\t{\n        \t\t\t\"label\": \"Sale Price\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Sale Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Funds Sent Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Charge Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Check Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Days Run\",\n                    \"value\": 15,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Buyer\",\n                    \"value\": \"Sofia Berjsen\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Auction\",\n                    \"value\": \"aaa\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t}\n        \t],\n            \"charges\": [\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Recon: Tires\",\n                    \"description\": \"Multiple dents/paint damage, etc.\"\n                },\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Sale Fee\",\n                    \"description\": \"Fee for sale, etc.\"\n                }\n            ]\n        },\n        \"client\": {\n            \"fields\": [\n                {\n                    \"label\": \"Private Code 1\",\n                    \"value\": \"89071-113\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Private Book Value\",\n                    \"value\": 4500,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Date 1\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Text 1\",\n                    \"value\": \"Demo Text\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                }\n            ]\n        },\n        \"holds\": [\n\t        {\n\t            \"id\": 1,\n\t            \"holdType\": 25,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 2,\n\t            \"holdType\": 1,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 3,\n\t            \"holdType\": 19,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 4,\n\t            \"holdType\": 14,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 5,\n\t            \"holdType\": 10,\n\t            \"holdUntilDate\": 1564782051791\n\t        }\n\t    ],\n\t    \"actions\": [\n\t    \t\"Clear for sale\",\n        \t\"Cancel\",\n        \t\"Request redemption\"\n\t    ]\n    },\n    {\n        \"summary\": {\n            \"invId\": 1008007725,\n            \"vin\": \"DEMOVINF7HU095677\",\n            \"year\": 2015,\n            \"make\": \"Maserati\",\n            \"model\": \"Ghibli\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 304,\n            \"images\": [\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t},\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t}\n            ],\n            \"mileage\": 36123,\n            \"clientAccountNumber\": \"CLIENTSTOCK2\",\n            \"auctionWo\": \"AUCTIONWO2\",\n            \"clientName\": \"Nationwide Fleet\",\n            \"auctionName\": \"166 Auto Auction\"\n        },\n        \"condition\": {\n        \t\"defaultCrType\": 1,\n            \"conditionReports\": [\n            \t{\n            \t\t\"crType\": 1,\n            \t\t\"crDescription\": \"Approved\",\n            \t\t\"count\": 20\n            \t},\n            \t{\n            \t\t\"crType\": 3,\n            \t\t\"crDescription\": \"Original\",\n            \t\t\"count\": 25\n            \t}\n            ],\n            \"repairNotes\": [\n                {\n                    \"type\": \"Repair Related\",\n                    \"date\": 1564782051791,\n                    \"text\": \"Amazon sells more than half...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                },\n                {\n                    \"type\": \"Dealer Message\",\n                    \"date\": 1564782051791,\n                    \"text\": \"From her first novel at 50...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                }\n            ]\n        },\n        \"tracking\": [\n            {\n                \"type\": \"Date Last Modified by Web Application\",\n                \"date\": 1564782051791,\n                \"text\": \"\",\n                \"author\": \"\",\n                \"private\": false\n            },\n            {\n                \"type\": \"Client Repair Note\",\n                \"date\": 1564782051791,\n                \"text\": \"Check out the rear bumper.\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            }\n        ],\n        \"livePricing\": {\n            \"requestedFloorPrice\": 9943,\n            \"privateFloorPrice\": 9943,\n            \"lastSavedLivePrice\": 9943,\n            \"guideType\": \"Black Book\",\n            \"guideValue\": 11343,\n            \"damageDeduction\": 1500,\n            \"priceAdjustment\": 100\n        },\n        \"auction\": {\n        \t\"fields\": [\n        \t\t{\n        \t\t\t\"label\": \"Sale Price\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Sale Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Funds Sent Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Charge Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Check Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Days Run\",\n                    \"value\": 15,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Buyer\",\n                    \"value\": \"Sofia Berjsen\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Auction\",\n                    \"value\": \"aaa\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t}\n        \t],\n            \"charges\": [\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Recon: Tires\",\n                    \"description\": \"Multiple dents/paint damage, etc.\"\n                },\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Sale Fee\",\n                    \"description\": \"Fee for sale, etc.\"\n                }\n            ]\n        },\n        \"client\": {\n            \"fields\": [\n                {\n                    \"label\": \"Private Code 1\",\n                    \"value\": \"89071-113\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Private Book Value\",\n                    \"value\": 4500,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Date 1\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Text 1\",\n                    \"value\": \"Demo Text\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                }\n            ]\n        },\n        \"holds\": [\n\t        {\n\t            \"id\": 1,\n\t            \"holdType\": 25,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 2,\n\t            \"holdType\": 1,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 3,\n\t            \"holdType\": 19,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 4,\n\t            \"holdType\": 14,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 5,\n\t            \"holdType\": 10,\n\t            \"holdUntilDate\": 1564782051791\n\t        }\n\t    ],\n\t    \"actions\": [\n\t    \t\"Clear for sale\",\n        \t\"Cancel\",\n        \t\"Request redemption\"\n\t    ]\n    },\n    {\n        \"summary\": {\n            \"invId\": 1001397741,\n            \"vin\": \"DEMOVINF7HU095678\",\n            \"year\": 2012,\n            \"make\": \"Kia\",\n            \"model\": \"Sorento\",\n            \"holdText\": \"Bankruptcy\",\n            \"vehicleStatus\": 301,\n            \"images\": [\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t},\n            \t{\n            \t\t\"label\": \"<label>\",\n            \t\t\"uri\": \"<uri>\"\n            \t}\n            ],\n            \"mileage\": 36123,\n            \"clientAccountNumber\": \"CLIENTSTOCK2\",\n            \"auctionWo\": \"AUCTIONWO2\",\n            \"clientName\": \"Nationwide Fleet\",\n            \"auctionName\": \"166 Auto Auction\"\n        },\n        \"condition\": {\n        \t\"defaultCrType\": 1,\n            \"conditionReports\": [\n            \t{\n            \t\t\"crType\": 1,\n            \t\t\"crDescription\": \"Approved\",\n            \t\t\"count\": 20\n            \t},\n            \t{\n            \t\t\"crType\": 3,\n            \t\t\"crDescription\": \"Original\",\n            \t\t\"count\": 25\n            \t}\n            ],\n            \"repairNotes\": [\n                {\n                    \"type\": \"Repair Related\",\n                    \"date\": 1564782051791,\n                    \"text\": \"Amazon sells more than half...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                },\n                {\n                    \"type\": \"Dealer Message\",\n                    \"date\": 1564782051791,\n                    \"text\": \"From her first novel at 50...\",\n                    \"author\": \"Joe Miller\",\n                    \"private\": false\n                }\n            ]\n        },\n        \"tracking\": [\n            {\n                \"type\": \"Date Last Modified by Web Application\",\n                \"date\": 1564782051791,\n                \"text\": \"\",\n                \"author\": \"\",\n                \"private\": false\n            },\n            {\n                \"type\": \"Client Repair Note\",\n                \"date\": 1564782051791,\n                \"text\": \"Check out the rear bumper.\",\n                \"author\": \"Joe Miller\",\n                \"private\": false\n            }\n        ],\n        \"livePricing\": {\n            \"requestedFloorPrice\": 9943,\n            \"privateFloorPrice\": 9943,\n            \"lastSavedLivePrice\": 9943,\n            \"guideType\": \"Black Book\",\n            \"guideValue\": 11343,\n            \"damageDeduction\": 1500,\n            \"priceAdjustment\": 100\n        },\n        \"auction\": {\n        \t\"fields\": [\n        \t\t{\n        \t\t\t\"label\": \"Sale Price\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Sale Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Funds Sent Date\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Charge Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Check Amount\",\n                    \"value\": 4345,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Days Run\",\n                    \"value\": 15,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Buyer\",\n                    \"value\": \"Sofia Berjsen\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t},\n        \t\t{\n        \t\t\t\"label\": \"Auction\",\n                    \"value\": \"aaa\",\n                    \"type\": \"string\",\n                    \"editable\": false\n        \t\t}\n        \t],\n            \"charges\": [\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Recon: Tires\",\n                    \"description\": \"Multiple dents/paint damage, etc.\"\n                },\n                {\n                    \"amount\": 255.6,\n                    \"chargeType\": \"Sale Fee\",\n                    \"description\": \"Fee for sale, etc.\"\n                }\n            ]\n        },\n        \"client\": {\n            \"fields\": [\n                {\n                    \"label\": \"Private Code 1\",\n                    \"value\": \"89071-113\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Private Book Value\",\n                    \"value\": 4500,\n                    \"type\": \"numeric\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Date 1\",\n                    \"value\": 1564782051791,\n                    \"type\": \"date\",\n                    \"editable\": false\n                },\n                {\n                    \"label\": \"Open Text 1\",\n                    \"value\": \"Demo Text\",\n                    \"type\": \"string\",\n                    \"editable\": false\n                }\n            ]\n        },\n        \"holds\": [\n\t        {\n\t            \"id\": 1,\n\t            \"holdType\": 25,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 2,\n\t            \"holdType\": 1,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 3,\n\t            \"holdType\": 19,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 4,\n\t            \"holdType\": 14,\n\t            \"holdUntilDate\": 1564782051791\n\t        },\n\t        {\n\t            \"id\": 5,\n\t            \"holdType\": 10,\n\t            \"holdUntilDate\": 1564782051791\n\t        }\n\t    ],\n\t    \"actions\": [\n\t    \t\"Clear for sale\",\n        \t\"Cancel\",\n        \t\"Request redemption\"\n\t    ]\n    }\n]"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "/mobile/app/options",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/mobile/app/options",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"mobile",
+						"app",
+						"options"
+					]
+				},
+				"description": "Returns Note Types, Hold Types, and Status options."
+			},
+			"response": [
+				{
+					"name": "200 - Get options",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/mobile/app/options",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"app",
+								"options"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"noteTypes\": [\n      {\n        \"code\": \"A\",\n        \"description\": \"Auction\"\n      },\n      {\n        \"code\": \"1\",\n        \"description\": \"Auction Transport\"\n      },\n      {\n        \"code\": \"B\",\n        \"description\": \"Bid History\"\n      }\n    ],\n    \"holdTypes\": [\n      {\n        \"code\": \"1\",\n        \"description\": \"Bankruptcy\"\n      },\n      {\n        \"code\": \"2\",\n        \"description\": \"Insurance\"\n      },\n      {\n        \"code\": \"3\",\n        \"description\": \"Legal\"\n      },\n      {\n        \"code\": \"4\",\n        \"description\": \"Other Buyer\"\n      },\n      {\n        \"code\": \"5\",\n        \"description\": \"Repo\"\n      }\n    ],\n    \"vehicleStatus\": [\n      {\n        \"code\": \"1\",\n        \"description\": \"Unassigned to Auction\"\n      },\n      {\n        \"code\": \"304\",\n        \"description\": \"Awaiting Clearance/Repaired\"\n      },\n      {\n        \"code\": \"801\",\n        \"description\": \"Sold / Funds Not Sent\"\n      },\n      {\n        \"code\": \"802\",\n        \"description\": \"Sold / Funds Sent\"\n      }\n    ],\n    \"approvalStatus\": [\n      \"Not Reviewed\",\n      \"Approved\",\n      \"Rejected\",\n      \"Request Requote\",\n      \"Under Review\",\n      \"Approved via Auction\"\n    ]\n  }"
+				}
+			]
+		},
+		{
+			"name": "/mobile/home",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/mobile/home",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"mobile",
+						"home"
+					]
+				},
+				"description": "Returns recently viewed vehicles list and widgets."
+			},
+			"response": [
+				{
+					"name": "200 - Get home",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mobile/home",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"home"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"recent\": {\n \t\"vehicleList\": [\n        {\n            \"invId\": 1006050645,\n            \"vin\": \"DEMOVINF7HU095676\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Hyundai\",\n            \"model\": \"Sonata\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1008007725,\n            \"vin\": \"DEMOVINF7HU095677\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2015,\n            \"make\": \"Maserati\",\n            \"model\": \"Ghibli\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 304\n        },\n        {\n            \"invId\": 1001397741,\n            \"vin\": \"DEMOVINF7HU095678\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Kia\",\n            \"model\": \"Sorento\",\n            \"holdText\": \"Bankruptcy\",\n            \"vehicleStatus\": 301\n        },\n        {\n            \"invId\": 1003989149,\n            \"vin\": \"DEMOVINF7HU095679\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2010,\n            \"make\": \"Jeep\",\n            \"model\": \"Liberty\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 401\n        },\n        {\n            \"invId\": 1009206999,\n            \"vin\": \"DEMOVINF7HU095680\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2009,\n            \"make\": \"Dodge\",\n            \"model\": \"Journey\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006178099,\n            \"vin\": \"DEMOVINF7HU095681\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 1999,\n            \"make\": \"BMW\",\n            \"model\": \"5 Series\",\n            \"holdText\": \"Corrections\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006353079,\n            \"vin\": \"DEMOVINF7HU095682\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Dodge\",\n            \"model\": \"Challenger\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1007782748,\n            \"vin\": \"DEMOVINF7HU095683\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Hyundai\",\n            \"model\": \"Azera\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1002298267,\n            \"vin\": \"DEMOVINF7HU095684\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2016,\n            \"make\": \"Chrysler\",\n            \"model\": \"3000\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1005965601,\n            \"vin\": \"DEMOVINF7HU095685\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2019,\n            \"make\": \"Toyota\",\n            \"model\": \"Highlander\",\n            \"holdText\": \"3rd Party\",\n            \"vehicleStatus\": 802\n        }\n    ]\n },\n \"widgets\": [\n  {\n   \"id\": 1,\n   \"label\": \"Scheduled for today\"\n  },\n  {\n   \"id\": 2,\n   \"label\": \"CR complete last 24 hours\"\n  },\n  {\n   \"id\": 3,\n   \"label\": \"Avis missing floors\"\n  },\n  {\n   \"id\": 4,\n   \"label\": \"Avis on hold\"\n   }\n ]\n}"
+				}
+			]
+		},
+		{
+			"name": "/mobile/search",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vin\": [\"DEMOVINF7HU095676\"],\n\t\"auctionWo\": [\"123456\"],\n\t\"clientAccountNumber\": [\"123456\"],\n\t\"auction\": [\"aaa\", \"1051\"],\n\t\"client\": [\"bbb\", \"1010\"],\n\t\"scheduledSaleDateStart\": 1565122746444,\n\t\"scheduledSaleDateEnd\": 1565727790359,\n\t\"holdType\": [1],\n\t\"vehicleStatus\": [802],\n\t\"yearStart\": 2012,\n\t\"yearEnd\": 2019,\n\t\"make\": \"Hyundai\",\n\t\"model\": \"Sonata\",\n\t\"mileageStart\": 0,\n\t\"mileageEnd\": 20000,\n\t\"limit\": 10,\n\t\"start\": 0,\n\t\"sortKey\": \"<sortKey>\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/mobile/search",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"mobile",
+						"search"
+					]
+				},
+				"description": "Search for vehicles."
+			},
+			"response": [
+				{
+					"name": "200 - Search",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"vin\": [\"DEMOVINF7HU095676\"],\n\t\"auctionWo\": [\"123456\"],\n\t\"clientAccountNumber\": [\"123456\"],\n\t\"auction\": [\"aaa\", \"1051\"],\n\t\"client\": [\"bbb\", \"1010\"],\n\t\"scheduledSaleDateStart\": 1565122746444,\n\t\"scheduledSaleDateEnd\": 1565727790359,\n\t\"holdType\": [1],\n\t\"vehicleStatus\": [802],\n\t\"yearStart\": 2012,\n\t\"yearEnd\": 2019,\n\t\"make\": \"Hyundai\",\n\t\"model\": \"Sonata\",\n\t\"mileageStart\": 0,\n\t\"mileageEnd\": 20000,\n\t\"limit\": 10,\n\t\"start\": 0,\n\t\"sortKey\": \"<sortKey>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/mobile/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mobile",
+								"search"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "{\n    \"totalCount\": 1900,\n    \"vehicleList\": [\n        {\n            \"invId\": 1006050645,\n            \"vin\": \"DEMOVINF7HU095676\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Hyundai\",\n            \"model\": \"Sonata\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1008007725,\n            \"vin\": \"DEMOVINF7HU095677\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2015,\n            \"make\": \"Maserati\",\n            \"model\": \"Ghibli\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 304\n        },\n        {\n            \"invId\": 1001397741,\n            \"vin\": \"DEMOVINF7HU095678\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2012,\n            \"make\": \"Kia\",\n            \"model\": \"Sorento\",\n            \"holdText\": \"Bankruptcy\",\n            \"vehicleStatus\": 301\n        },\n        {\n            \"invId\": 1003989149,\n            \"vin\": \"DEMOVINF7HU095679\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2010,\n            \"make\": \"Jeep\",\n            \"model\": \"Liberty\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 401\n        },\n        {\n            \"invId\": 1009206999,\n            \"vin\": \"DEMOVINF7HU095680\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2009,\n            \"make\": \"Dodge\",\n            \"model\": \"Journey\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006178099,\n            \"vin\": \"DEMOVINF7HU095681\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 1999,\n            \"make\": \"BMW\",\n            \"model\": \"5 Series\",\n            \"holdText\": \"Corrections\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1006353079,\n            \"vin\": \"DEMOVINF7HU095682\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Dodge\",\n            \"model\": \"Challenger\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1007782748,\n            \"vin\": \"DEMOVINF7HU095683\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2013,\n            \"make\": \"Hyundai\",\n            \"model\": \"Azera\",\n            \"holdText\": \"2 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1002298267,\n            \"vin\": \"DEMOVINF7HU095684\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2016,\n            \"make\": \"Chrysler\",\n            \"model\": \"3000\",\n            \"holdText\": \"3 holds\",\n            \"vehicleStatus\": 802\n        },\n        {\n            \"invId\": 1005965601,\n            \"vin\": \"DEMOVINF7HU095685\",\n            \"thumbnail\": \"<uri>\",\n            \"year\": 2019,\n            \"make\": \"Toyota\",\n            \"model\": \"Highlander\",\n            \"holdText\": \"3rd Party\",\n            \"vehicleStatus\": 802\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "38b1f83f-f49b-48d4-8264-298558193e0f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6be850d8-e159-46f3-b19a-0ad9b0778049",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"response is ok\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c75cf17c-3d69-4362-82d3-095a0aced649",
+			"key": "baseUrl",
+			"value": "https://19d50461-0678-41da-9f86-6d9ca69d80a7.mock.pstmn.io",
+			"type": "string"
+		},
+		{
+			"id": "2384ecfd-d635-4611-a76b-07b915fd9773",
+			"key": "token",
+			"value": "abcd123456",
+			"type": "string"
+		},
+		{
+			"id": "a1952b9a-85c4-4d3b-a7db-8aba3b43abcd",
+			"key": "url",
+			"value": "https://19d50461-0678-41da-9f86-6d9ca69d80a7.mock.pstmn.io",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
